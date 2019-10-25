@@ -7,6 +7,7 @@ package aplikasi.view.menu.laporan;
 
 import aplikasi.config.FieldLimit;
 import aplikasi.config.KoneksiDB;
+import aplikasi.config.ValueFormatter;
 import aplikasi.controller.TableViewController;
 import aplikasi.entity.Aset;
 import aplikasi.entity.KategoriAset;
@@ -89,14 +90,14 @@ public class LaporanAset extends javax.swing.JInternalFrame {
             tableController.clearData();
             this.daftarAset = repoAset.findAll();
             for (Aset aset : daftarAset) {
-                Object[] row = {aset.getKode(), aset.getNama(), aset.getKategoriAset().getNama_kategori(),
+                Object[] row = {aset.getKode(), ValueFormatter.getLocalDateShort(aset.getTanggal().toLocalDate()), aset.getNama(), aset.getKategoriAset().getNama_kategori(),
                     aset.getStatusAset().getStatus(), aset.getLokasiAset().getNama_rak(), aset.getLokasiAset().getLokasi(),
                     aset.getKepemilikan().getNama(), aset.getQty(), aset.getSatuan(), aset.getUsers().getUsername()};
                 tableController.getModel().addRow(row);
                 total = total + aset.getQty();
             }
             lblTotal.setText(" " + total + " aset dies ditemukan");
-            tableController.setContentTableAlignment(Arrays.asList(0, 2, 3, 4, 5, 6, 7, 8, 9));
+            tableController.setContentTableAlignment(Arrays.asList(0, 1, 3, 5, 6, 8, 9, 10));
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Tidak dapat mendapatkan data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(LaporanAset.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,7 +195,7 @@ public class LaporanAset extends javax.swing.JInternalFrame {
                 total = total + aset.getQty();
             }
             lblTotal.setText(" " + total + " aset dies ditemukan");
-            tableController.setContentTableAlignment(Arrays.asList(0, 2, 3, 4, 5, 6, 7, 8, 9));
+            tableController.setContentTableAlignment(Arrays.asList(0, 1, 3, 5, 6, 8, 9, 10));
         } catch (Exception ex) {
 //            Logger.getLogger(LaporanDataAset.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -215,31 +216,20 @@ public class LaporanAset extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
-        jLabel2 = new javax.swing.JLabel();
-        txtKategori = new javax.swing.JComboBox<String>();
-        jLabel5 = new javax.swing.JLabel();
-        txtLokasi = new javax.swing.JComboBox<String>();
-        jLabel8 = new javax.swing.JLabel();
-        txtUser = new javax.swing.JComboBox<String>();
-        jLabel6 = new javax.swing.JLabel();
-        txtKepemilikan = new javax.swing.JComboBox<String>();
-        jSeparator2 = new javax.swing.JToolBar.Separator();
-        lblTotal = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jToolBar2 = new javax.swing.JToolBar();
         jLabel1 = new javax.swing.JLabel();
-        txtNamaAset = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        txtNamaRak = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtQty = new javax.swing.JComboBox<String>();
-        jLabel3 = new javax.swing.JLabel();
-        txtStatus = new javax.swing.JComboBox<String>();
+        txtTanggalAwal = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
+        txtTanggalAkhir = new com.toedter.calendar.JDateChooser();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnFilter = new javax.swing.JButton();
+        lblKategori = new javax.swing.JLabel();
+        txtKategori = new javax.swing.JComboBox<String>();
+        lblKepemilikan = new javax.swing.JLabel();
+        txtKepemilikan = new javax.swing.JComboBox<String>();
+        jLabel3 = new javax.swing.JLabel();
+        btnProses = new javax.swing.JButton();
         btnCetak = new javax.swing.JButton();
-        btnReset = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableView = new javax.swing.JTable();
@@ -254,29 +244,52 @@ public class LaporanAset extends javax.swing.JInternalFrame {
 
         setTitle("Laporan Aset");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filter Laporan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 10))); // NOI18N
-        jPanel1.setPreferredSize(new java.awt.Dimension(721, 93));
+        jPanel1.setPreferredSize(new java.awt.Dimension(721, 60));
 
         jScrollPane2.setBorder(null);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         jPanel2.setMaximumSize(new java.awt.Dimension(327867, 328767));
-
-        jPanel5.setMaximumSize(new java.awt.Dimension(2147483647, 29));
-        jPanel5.setPreferredSize(new java.awt.Dimension(515, 29));
-        jPanel5.setLayout(new java.awt.BorderLayout());
+        jPanel2.setPreferredSize(new java.awt.Dimension(2350, 174));
 
         jToolBar1.setBorder(null);
         jToolBar1.setRollover(true);
-        jToolBar1.setMaximumSize(new java.awt.Dimension(98626, 29));
-        jToolBar1.setMinimumSize(new java.awt.Dimension(497, 29));
-        jToolBar1.setPreferredSize(new java.awt.Dimension(100, 29));
 
-        jLabel2.setText(" Kategori :");
-        jLabel2.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel2.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel2.setPreferredSize(new java.awt.Dimension(80, 29));
+        jLabel1.setText(" Tanggal : ");
+        jToolBar1.add(jLabel1);
+
+        txtTanggalAwal.setMaximumSize(new java.awt.Dimension(120, 29));
+        txtTanggalAwal.setMinimumSize(new java.awt.Dimension(120, 29));
+        txtTanggalAwal.setPreferredSize(new java.awt.Dimension(120, 29));
+        jToolBar1.add(txtTanggalAwal);
+
+        jLabel2.setText("s/d");
         jToolBar1.add(jLabel2);
+
+        txtTanggalAkhir.setMaximumSize(new java.awt.Dimension(120, 29));
+        txtTanggalAkhir.setMinimumSize(new java.awt.Dimension(120, 29));
+        txtTanggalAkhir.setPreferredSize(new java.awt.Dimension(120, 29));
+        jToolBar1.add(txtTanggalAkhir);
+
+        jSeparator1.setMaximumSize(new java.awt.Dimension(5, 5));
+        jSeparator1.setMinimumSize(new java.awt.Dimension(5, 5));
+        jSeparator1.setPreferredSize(new java.awt.Dimension(5, 5));
+        jSeparator1.setSeparatorSize(new java.awt.Dimension(5, 5));
+        jToolBar1.add(jSeparator1);
+
+        btnFilter.setText(">>");
+        btnFilter.setFocusable(false);
+        btnFilter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFilter.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnFilter);
+
+        lblKategori.setText(" Kategori : ");
+        jToolBar1.add(lblKategori);
 
         txtKategori.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         txtKategori.setToolTipText("");
@@ -308,52 +321,14 @@ public class LaporanAset extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(txtKategori);
 
-        jLabel5.setText(" Lokasi :");
-        jLabel5.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel5.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel5.setPreferredSize(new java.awt.Dimension(80, 29));
-        jToolBar1.add(jLabel5);
-
-        txtLokasi.setToolTipText("");
-        txtLokasi.setMaximumSize(new java.awt.Dimension(125, 29));
-        txtLokasi.setMinimumSize(new java.awt.Dimension(125, 29));
-        txtLokasi.setPreferredSize(new java.awt.Dimension(125, 29));
-        txtLokasi.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                txtLokasiItemStateChanged(evt);
-            }
-        });
-        jToolBar1.add(txtLokasi);
-
-        jLabel8.setText(" Di input :");
-        jLabel8.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel8.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel8.setPreferredSize(new java.awt.Dimension(80, 29));
-        jToolBar1.add(jLabel8);
-
-        txtUser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        txtUser.setToolTipText("");
-        txtUser.setMaximumSize(new java.awt.Dimension(125, 29));
-        txtUser.setMinimumSize(new java.awt.Dimension(125, 29));
-        txtUser.setPreferredSize(new java.awt.Dimension(125, 29));
-        txtUser.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                txtUserItemStateChanged(evt);
-            }
-        });
-        jToolBar1.add(txtUser);
-
-        jLabel6.setText(" Kepemilikan :");
-        jLabel6.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel6.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel6.setPreferredSize(new java.awt.Dimension(80, 29));
-        jToolBar1.add(jLabel6);
+        lblKepemilikan.setText(" Kepemilikan : ");
+        jToolBar1.add(lblKepemilikan);
 
         txtKepemilikan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         txtKepemilikan.setToolTipText("");
-        txtKepemilikan.setMaximumSize(new java.awt.Dimension(200, 29));
-        txtKepemilikan.setMinimumSize(new java.awt.Dimension(200, 29));
-        txtKepemilikan.setPreferredSize(new java.awt.Dimension(200, 29));
+        txtKepemilikan.setMaximumSize(new java.awt.Dimension(180, 29));
+        txtKepemilikan.setMinimumSize(new java.awt.Dimension(180, 29));
+        txtKepemilikan.setPreferredSize(new java.awt.Dimension(180, 29));
         txtKepemilikan.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 txtKepemilikanItemStateChanged(evt);
@@ -361,130 +336,25 @@ public class LaporanAset extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(txtKepemilikan);
 
-        jSeparator2.setMaximumSize(new java.awt.Dimension(5, 5));
-        jSeparator2.setMinimumSize(new java.awt.Dimension(5, 5));
-        jSeparator2.setPreferredSize(new java.awt.Dimension(5, 5));
-        jSeparator2.setSeparatorSize(new java.awt.Dimension(5, 5));
-        jToolBar1.add(jSeparator2);
+        jLabel3.setText("  ");
+        jToolBar1.add(jLabel3);
 
-        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblTotal.setForeground(new java.awt.Color(82, 130, 179));
-        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTotal.setText("lblTotal");
-        jToolBar1.add(lblTotal);
-
-        jPanel5.add(jToolBar1, java.awt.BorderLayout.CENTER);
-
-        jPanel4.setMaximumSize(new java.awt.Dimension(2147483647, 29));
-        jPanel4.setPreferredSize(new java.awt.Dimension(1079, 29));
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jToolBar2.setBorder(null);
-        jToolBar2.setRollover(true);
-        jToolBar2.setPreferredSize(new java.awt.Dimension(100, 29));
-
-        jLabel1.setText(" Nama Aset :");
-        jLabel1.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel1.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel1.setPreferredSize(new java.awt.Dimension(80, 29));
-        jToolBar2.add(jLabel1);
-
-        txtNamaAset.setToolTipText("");
-        txtNamaAset.setMaximumSize(new java.awt.Dimension(125, 29));
-        txtNamaAset.setMinimumSize(new java.awt.Dimension(125, 29));
-        txtNamaAset.setPreferredSize(new java.awt.Dimension(125, 29));
-        txtNamaAset.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtNamaAsetCaretUpdate(evt);
-            }
-        });
-        txtNamaAset.addActionListener(new java.awt.event.ActionListener() {
+        btnProses.setText("Proses");
+        btnProses.setFocusable(false);
+        btnProses.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnProses.setMaximumSize(new java.awt.Dimension(100, 29));
+        btnProses.setMinimumSize(new java.awt.Dimension(100, 29));
+        btnProses.setPreferredSize(new java.awt.Dimension(100, 29));
+        btnProses.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnProses.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNamaAsetActionPerformed(evt);
+                btnProsesActionPerformed(evt);
             }
         });
-        txtNamaAset.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNamaAsetKeyReleased(evt);
-            }
-        });
-        jToolBar2.add(txtNamaAset);
-
-        jLabel4.setText(" No Rak :");
-        jLabel4.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel4.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel4.setPreferredSize(new java.awt.Dimension(80, 29));
-        jToolBar2.add(jLabel4);
-
-        txtNamaRak.setToolTipText("");
-        txtNamaRak.setMaximumSize(new java.awt.Dimension(125, 29));
-        txtNamaRak.setMinimumSize(new java.awt.Dimension(125, 29));
-        txtNamaRak.setPreferredSize(new java.awt.Dimension(125, 29));
-        txtNamaRak.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtNamaRakCaretUpdate(evt);
-            }
-        });
-        txtNamaRak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNamaRakActionPerformed(evt);
-            }
-        });
-        txtNamaRak.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNamaRakKeyReleased(evt);
-            }
-        });
-        jToolBar2.add(txtNamaRak);
-
-        jLabel7.setText(" Qty :");
-        jLabel7.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel7.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel7.setPreferredSize(new java.awt.Dimension(80, 29));
-        jToolBar2.add(jLabel7);
-
-        txtQty.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "%", "0", "1" }));
-        txtQty.setToolTipText("");
-        txtQty.setMaximumSize(new java.awt.Dimension(125, 29));
-        txtQty.setMinimumSize(new java.awt.Dimension(125, 29));
-        txtQty.setPreferredSize(new java.awt.Dimension(125, 29));
-        txtQty.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                txtQtyItemStateChanged(evt);
-            }
-        });
-        txtQty.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtQtyActionPerformed(evt);
-            }
-        });
-        jToolBar2.add(txtQty);
-
-        jLabel3.setText(" Status :");
-        jLabel3.setMaximumSize(new java.awt.Dimension(80, 29));
-        jLabel3.setMinimumSize(new java.awt.Dimension(80, 29));
-        jLabel3.setPreferredSize(new java.awt.Dimension(80, 29));
-        jToolBar2.add(jLabel3);
-
-        txtStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        txtStatus.setToolTipText("");
-        txtStatus.setMaximumSize(new java.awt.Dimension(200, 29));
-        txtStatus.setMinimumSize(new java.awt.Dimension(200, 29));
-        txtStatus.setPreferredSize(new java.awt.Dimension(200, 29));
-        txtStatus.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                txtStatusItemStateChanged(evt);
-            }
-        });
-        jToolBar2.add(txtStatus);
-
-        jSeparator1.setMaximumSize(new java.awt.Dimension(5, 5));
-        jSeparator1.setMinimumSize(new java.awt.Dimension(5, 5));
-        jSeparator1.setPreferredSize(new java.awt.Dimension(5, 5));
-        jSeparator1.setSeparatorSize(new java.awt.Dimension(5, 5));
-        jToolBar2.add(jSeparator1);
+        jToolBar1.add(btnProses);
 
         btnCetak.setText("Cetak");
+        btnCetak.setEnabled(false);
         btnCetak.setFocusable(false);
         btnCetak.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCetak.setMaximumSize(new java.awt.Dimension(100, 29));
@@ -496,38 +366,21 @@ public class LaporanAset extends javax.swing.JInternalFrame {
                 btnCetakActionPerformed(evt);
             }
         });
-        jToolBar2.add(btnCetak);
-
-        btnReset.setText("Reset");
-        btnReset.setFocusable(false);
-        btnReset.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnReset.setMaximumSize(new java.awt.Dimension(100, 29));
-        btnReset.setMinimumSize(new java.awt.Dimension(100, 29));
-        btnReset.setPreferredSize(new java.awt.Dimension(100, 29));
-        btnReset.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnReset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResetActionPerformed(evt);
-            }
-        });
-        jToolBar2.add(btnReset);
-
-        jPanel4.add(jToolBar2, java.awt.BorderLayout.CENTER);
+        jToolBar1.add(btnCetak);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 1060, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 1290, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 112, Short.MAX_VALUE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 120, Short.MAX_VALUE))
         );
 
         jScrollPane2.setViewportView(jPanel2);
@@ -536,28 +389,39 @@ public class LaporanAset extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1377, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 2068, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Daftar Aset"));
+        jPanel3.setMaximumSize(new java.awt.Dimension(721, 52));
+        jPanel3.setMinimumSize(new java.awt.Dimension(721, 52));
+        jPanel3.setPreferredSize(new java.awt.Dimension(721, 52));
 
         tableView.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Kode", "Nama Aset", "Kategori", "Status", "No Rak", "Lokasi Rak", "Kepemilikan", "Qty", "Satuan", "Diinput"
+                "Kode", "Tanggal", "Nama Aset", "Kategori", "Status", "No Rak", "Lokasi Rak", "Kepemilikan", "Qty", "Satuan", "Diinput"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 tableViewMouseReleased(evt);
@@ -567,31 +431,33 @@ public class LaporanAset extends javax.swing.JInternalFrame {
         if (tableView.getColumnModel().getColumnCount() > 0) {
             tableView.getColumnModel().getColumn(0).setPreferredWidth(75);
             tableView.getColumnModel().getColumn(0).setMaxWidth(75);
-            tableView.getColumnModel().getColumn(1).setMinWidth(150);
-            tableView.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tableView.getColumnModel().getColumn(1).setPreferredWidth(70);
+            tableView.getColumnModel().getColumn(1).setMaxWidth(70);
+            tableView.getColumnModel().getColumn(2).setMinWidth(150);
             tableView.getColumnModel().getColumn(2).setPreferredWidth(150);
-            tableView.getColumnModel().getColumn(2).setMaxWidth(150);
-            tableView.getColumnModel().getColumn(4).setPreferredWidth(80);
-            tableView.getColumnModel().getColumn(4).setMaxWidth(80);
+            tableView.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tableView.getColumnModel().getColumn(3).setMaxWidth(150);
             tableView.getColumnModel().getColumn(5).setPreferredWidth(80);
             tableView.getColumnModel().getColumn(5).setMaxWidth(80);
-            tableView.getColumnModel().getColumn(7).setPreferredWidth(50);
-            tableView.getColumnModel().getColumn(7).setMaxWidth(50);
+            tableView.getColumnModel().getColumn(6).setPreferredWidth(80);
+            tableView.getColumnModel().getColumn(6).setMaxWidth(80);
             tableView.getColumnModel().getColumn(8).setPreferredWidth(50);
             tableView.getColumnModel().getColumn(8).setMaxWidth(50);
             tableView.getColumnModel().getColumn(9).setPreferredWidth(50);
             tableView.getColumnModel().getColumn(9).setMaxWidth(50);
+            tableView.getColumnModel().getColumn(10).setPreferredWidth(50);
+            tableView.getColumnModel().getColumn(10).setMaxWidth(50);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1377, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 2052, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -624,8 +490,20 @@ public class LaporanAset extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_pmnuLihatTransaksiActionPerformed
 
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        if (btnFilter.getText().equals(">>")) {
+            btnFilter.setText("<<");
+            showFilter();
+        } else {
+            btnFilter.setText(">>");
+            txtKategori.setSelectedIndex(0);
+            txtKepemilikan.setSelectedIndex(0);
+            hideFilter();
+        }
+    }//GEN-LAST:event_btnFilterActionPerformed
+
     private void txtKategoriItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtKategoriItemStateChanged
-        refreshDataTablesWithFilter();
+        //        refreshDataTablesWithFilter();
     }//GEN-LAST:event_txtKategoriItemStateChanged
 
     private void txtKategoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtKategoriMouseClicked
@@ -644,120 +522,64 @@ public class LaporanAset extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txtKategoriKeyPressed
 
-    private void txtLokasiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtLokasiItemStateChanged
-        refreshDataTablesWithFilter();
-    }//GEN-LAST:event_txtLokasiItemStateChanged
-
-    private void txtUserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtUserItemStateChanged
-        refreshDataTablesWithFilter();
-    }//GEN-LAST:event_txtUserItemStateChanged
-
     private void txtKepemilikanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtKepemilikanItemStateChanged
-        refreshDataTablesWithFilter();
+        //        refreshDataTablesWithFilter();
     }//GEN-LAST:event_txtKepemilikanItemStateChanged
 
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        try {
-            LaporanAset view = new LaporanAset(menuController, p);
-            this.menuController.setInnerLayout(view);
-        } catch (Exception ex) {
-            Logger.getLogger(LaporanAset.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnResetActionPerformed
+    private void btnProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProsesActionPerformed
+        String valueTglAwal = ValueFormatter.getDateSQL(txtTanggalAwal.getDate());
+        String valueTglAkhir = ValueFormatter.getDateSQL(txtTanggalAkhir.getDate());
+        refreshDataPeminjaman(Date.valueOf(valueTglAwal), Date.valueOf(valueTglAkhir));
+    }//GEN-LAST:event_btnProsesActionPerformed
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
-        if (daftarAset.size() > 0) {
+        if (daftarPeminjamanDetail.size() > 0) {
             try {
-                String url = "/laporan/DataAset.jasper";
+                String url = "/laporan/PeminjamanAset.jasper";
                 Map<String, Object> map = new HashMap<>();
+                map.put("tglAwal", txtTanggalAwal.getDate());
+                map.put("tglAkhir", txtTanggalAkhir.getDate());
                 map.put("pengguna", p.getNama());
                 map.put("jabatan", p.getJabatan().toString());
                 JasperPrint print = JasperFillManager.fillReport(
                     getClass().getResourceAsStream(url),
                     map,
-                    new JRBeanCollectionDataSource(daftarAset));
+                    new JRBeanCollectionDataSource(daftarPeminjamanDetail));
                 JasperViewer view = new JasperViewer(print, false);
                 view.setLocationRelativeTo(null);
                 view.setExtendedState(JasperViewer.MAXIMIZED_BOTH);
                 view.setVisible(true);
             } catch (JRException ex) {
-                Logger.getLogger(LaporanAset.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LaporanSirkulasiAsetView.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Data masih kosong", getTitle(), JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Data belum diproses", getTitle(), JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnCetakActionPerformed
-
-    private void txtStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtStatusItemStateChanged
-        refreshDataTablesWithFilter();
-    }//GEN-LAST:event_txtStatusItemStateChanged
-
-    private void txtQtyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtQtyItemStateChanged
-        refreshDataTablesWithFilter();
-    }//GEN-LAST:event_txtQtyItemStateChanged
-
-    private void txtQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQtyActionPerformed
-
-    }//GEN-LAST:event_txtQtyActionPerformed
-
-    private void txtNamaRakCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtNamaRakCaretUpdate
-        refreshDataTablesWithFilter();
-    }//GEN-LAST:event_txtNamaRakCaretUpdate
-
-    private void txtNamaRakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaRakActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNamaRakActionPerformed
-
-    private void txtNamaRakKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNamaRakKeyReleased
-        refreshDataTablesWithFilter();
-    }//GEN-LAST:event_txtNamaRakKeyReleased
-
-    private void txtNamaAsetCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtNamaAsetCaretUpdate
-
-    }//GEN-LAST:event_txtNamaAsetCaretUpdate
-
-    private void txtNamaAsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaAsetActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNamaAsetActionPerformed
-
-    private void txtNamaAsetKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNamaAsetKeyReleased
-        refreshDataTablesWithFilter();
-    }//GEN-LAST:event_txtNamaAsetKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCetak;
-    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnFilter;
+    private javax.swing.JButton btnProses;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JToolBar jToolBar2;
-    private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblKategori;
+    private javax.swing.JLabel lblKepemilikan;
     private javax.swing.JMenuItem pmnuLihatTransaksi;
     private javax.swing.JTable tableView;
     private javax.swing.JComboBox<String> txtKategori;
     private javax.swing.JComboBox<String> txtKepemilikan;
-    private javax.swing.JComboBox<String> txtLokasi;
-    private javax.swing.JTextField txtNamaAset;
-    private javax.swing.JTextField txtNamaRak;
-    private javax.swing.JComboBox<String> txtQty;
-    private javax.swing.JComboBox<String> txtStatus;
-    private javax.swing.JComboBox<String> txtUser;
+    private com.toedter.calendar.JDateChooser txtTanggalAkhir;
+    private com.toedter.calendar.JDateChooser txtTanggalAwal;
     // End of variables declaration//GEN-END:variables
 }

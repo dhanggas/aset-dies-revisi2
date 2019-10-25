@@ -545,7 +545,7 @@ public class MainMenuView extends javax.swing.JFrame {
             }
         });
 
-        mniLapDataAset.setText("Aset");
+        mniLapDataAset.setText("Aset Baru");
         mniLapDataAset.setEnabled(false);
         mniLapDataAset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

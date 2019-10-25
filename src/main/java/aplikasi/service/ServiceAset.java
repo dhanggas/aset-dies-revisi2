@@ -80,7 +80,7 @@ public class ServiceAset implements RepoAset {
         ps.setInt(9, b.getUsers().getId_user());
         ps.setString(10, b.getKode());
         ps.executeUpdate();
-
+       
         ps.close();
         connect.close();
         return b;
@@ -97,6 +97,7 @@ public class ServiceAset implements RepoAset {
         while (rs.next()) {
             Aset a = new Aset();
             a.setKode(rs.getString("kode_aset"));
+            a.setTanggal(rs.getDate("tanggal"));
             a.setNama(rs.getString("nama_aset"));
             a.setQty(rs.getInt("quantity"));
             a.setSatuan(rs.getString("satuan"));

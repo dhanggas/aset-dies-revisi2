@@ -169,7 +169,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="mniLapDataAset">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Aset"/>
+                <Property name="text" type="java.lang.String" value="Aset Baru"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>

@@ -69,15 +69,15 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
             tableController.clearData();
             this.daftarAset = repoAset.findAll();
             for (Aset aset : daftarAset) {
-                Object[] row = {aset.getKode(), aset.getNama(), aset.getKategoriAset().getNama_kategori(),
+                Object[] row = {aset.getKode(),ValueFormatter.getLocalDateShort(aset.getTanggal().toLocalDate()), aset.getNama(), aset.getKategoriAset().getNama_kategori(),
                     aset.getLokasiAset().getNama_rak(),
                     aset.getQty(), aset.getSatuan()};
                 tableController.getModel().addRow(row);
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Tidak dapat mendapatkan data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(DaftarAsetView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        tableController.setContentTableAlignment(Arrays.asList(0, 1, 3, 4, 5, 6));
     }
 
     public void selectLastRow() {
@@ -90,7 +90,7 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
             tableController.clearData();
             this.daftarAset = repoAset.findByNama(txtCari.getText());
             for (Aset aset : daftarAset) {
-                Object[] row = {aset.getKode(), aset.getTanggal(), aset.getNama(), aset.getKategoriAset().getNama_kategori(),
+                Object[] row = {aset.getKode(),ValueFormatter.getLocalDateShort(aset.getTanggal().toLocalDate()), aset.getNama(), aset.getKategoriAset().getNama_kategori(),
                     aset.getLokasiAset().getNama_rak(),
                     aset.getQty(), aset.getSatuan()};
                 tableController.getModel().addRow(row);
@@ -218,14 +218,9 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Daftar Aset"));
 
         txtCari.setToolTipText("Pencarian berdasarkan nama aset");
-        txtCari.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtCariCaretUpdate(evt);
-            }
-        });
-        txtCari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCariActionPerformed(evt);
+        txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCariKeyTyped(evt);
             }
         });
 
@@ -274,7 +269,9 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
             tableView.getColumnModel().getColumn(3).setPreferredWidth(100);
             tableView.getColumnModel().getColumn(4).setPreferredWidth(50);
             tableView.getColumnModel().getColumn(5).setPreferredWidth(50);
-            tableView.getColumnModel().getColumn(6).setPreferredWidth(50);
+            tableView.getColumnModel().getColumn(6).setMinWidth(0);
+            tableView.getColumnModel().getColumn(6).setPreferredWidth(0);
+            tableView.getColumnModel().getColumn(6).setMaxWidth(0);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -456,11 +453,6 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
         view.setVisible(true);
     }//GEN-LAST:event_btnTambahActionPerformed
 
-    private void txtCariCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtCariCaretUpdate
-//        tableController.getSorter().setRowFilter(RowFilter.regexFilter(txtCari.getText()));
-        refreshDataTablesByName();
-    }//GEN-LAST:event_txtCariCaretUpdate
-
     private void tableViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableViewMouseClicked
         clearFields();
 //        txtCari.setText("");
@@ -471,9 +463,6 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
         } else {
         }
     }//GEN-LAST:event_tableViewMouseClicked
-
-    private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
-    }//GEN-LAST:event_txtCariActionPerformed
 
     private void tableViewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableViewMouseReleased
         if (evt.isPopupTrigger()) {
@@ -512,6 +501,7 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 2) {
             txtCari.setText("");
             txtCari.requestFocus();
+            refreshDataTables();
         }
     }//GEN-LAST:event_lblCariMouseClicked
 
@@ -520,6 +510,10 @@ public class DaftarAsetView extends javax.swing.JInternalFrame {
             btnTambahActionPerformed(null);
         }
     }//GEN-LAST:event_btnTambahKeyPressed
+
+    private void txtCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyTyped
+        refreshDataTablesByName();
+    }//GEN-LAST:event_txtCariKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

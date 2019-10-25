@@ -248,13 +248,16 @@ public class DataAsetView extends javax.swing.JDialog {
         txtQty.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtQty.setText("1");
         txtQty.setToolTipText("");
-        txtQty.setFocusable(false);
+        txtQty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtQtyKeyTyped(evt);
+            }
+        });
 
         jLabel11.setText("Satuan");
 
         cboUbah.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         cboUbah.setText("Ubah Quantity");
-        cboUbah.setEnabled(false);
         cboUbah.setFocusable(false);
         cboUbah.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -446,10 +449,11 @@ public class DataAsetView extends javax.swing.JDialog {
     private void cboUbahItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboUbahItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             txtQty.setEnabled(true);
+            txtQty.setEditable(true);
             txtQty.requestFocus();
             txtQty.selectAll();
         } else {
-            txtQty.setEnabled(false);
+            txtQty.setEditable(false);
         }
     }//GEN-LAST:event_cboUbahItemStateChanged
 
@@ -462,6 +466,10 @@ public class DataAsetView extends javax.swing.JDialog {
     private void txtNamaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNamaKeyReleased
         txtNama.setText(txtNama.getText().toUpperCase());
     }//GEN-LAST:event_txtNamaKeyReleased
+
+    private void txtQtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyTyped
+        FieldLimit.filterhuruf(evt);
+    }//GEN-LAST:event_txtQtyKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnKembali;
@@ -544,6 +552,7 @@ public class DataAsetView extends javax.swing.JDialog {
     private void setFields(Aset aset) {
         String vSatuan = "UNIT";
         txtKode.setText(aset.getKode());
+        txtTanggal.setDate(aset.getTanggal());
         txtNama.setText(aset.getNama());
         txtKodeKategori.setSelectedItem(aset.getKategoriAset().getNama_kategori());
         txtStatus.setSelectedItem(aset.getStatusAset().getStatus());

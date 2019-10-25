@@ -18,7 +18,7 @@ public class KoneksiDB {
         BasicDataSource ds = new BasicDataSource();
         ds.setUsername("root");
         ds.setPassword("hacked17.");
-        ds.setUrl("jdbc:mysql://localhost:3306/dbaset2");
+        ds.setUrl("jdbc:mysql://localhost:3306/dbasetrevisi2");
         ds.setDriverClassName("org.mariadb.jdbc.Driver");
         return ds;
     }
